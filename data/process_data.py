@@ -11,12 +11,13 @@ def load_data(messages_filepath, categories_filepath):
     messages_filepath: str, the filepath to disaster_messages.csv
     categories_filepath: str, the filepath to disaster_categories.csv
     
-    Returns a merged dataframe containing the data from the messages and categories     files.
+    Returns a merged dataframe containing the data from the messages and categories files.
     
     Returns:
     
     df: pandas Dataframe, merged dataframe of messages and categories data.
     '''
+    # Read in and merge csv datasets
     messages = pd.read_csv(messages_filepath)
     categories = pd.read_csv(categories_filepath)
     
@@ -44,13 +45,16 @@ def clean_data(df):
     df: pandas Dataframe, cleaned dataframe that can be used for ML.
      
     '''
+    # Split categories column features into useable format
     categories = df['categories'].str.split(pat=';', expand=True)
     row = categories.iloc[0]
-
+    
+    # Retrieve target category names
     get_names = lambda x: x[:-2]
     category_column_names = row.apply(get_names)
     categories.columns = category_column_names
     
+    # Convert category row values to numeric format
     number_replace = lambda x: x.replace(x, x[-1])
     
     for column in categories:
@@ -58,6 +62,7 @@ def clean_data(df):
     
         categories[column] = categories[column].astype(int)
     
+    # Drop unnecessary columns, duplicate rows, and concatenate for final df
     df = df.drop(columns='categories', axis=1)
     
     df = pd.concat([df, categories], axis=1)
@@ -79,6 +84,7 @@ def save_data(df, database_filename):
     
     Returns: None
     '''
+    # Save cleaned data to SQLite database
     engine = create_engine('sqlite:///' + str(database_filename))
     df.to_sql('DisasterResponsePipeline', engine, if_exists='replace',  index=False)
     
