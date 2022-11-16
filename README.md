@@ -26,7 +26,7 @@ The ML pipeline aims to retrieve the cleaned data from the SQLite database, and 
    - normalizing text by applying lower case and punctuation removal 
    - tokenizing text using the nltk library
    - removing stopwords that would not be helpful for ML
-   - applying lemming and stemmatization
+   - applying lemmatization
 
 Once this has been achieved, the machine learning pipeline makes use of sklearn's Pipeline class to initialize a vectorizer, TF-IDF transformer, as well as a classification model for the actual machine learning process. This is then conducted with gridsearch capabilities to ensure the best possible model outcome. For this particular project, the gridsearch iteration process is kept to a minimum to preserve computational stress and for efficiency purposes.
 
