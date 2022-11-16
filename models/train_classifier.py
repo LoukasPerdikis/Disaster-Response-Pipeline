@@ -69,7 +69,7 @@ def tokenize(text):
       - normalizes text by applying lower case and punctuation removal
       - tokenizes text using the nltk library
       - removes stopwords that would not be helpful for ML
-      - applies lemming and stemmatization
+      - applies lemmatization
       
     Returns:
     
@@ -85,9 +85,8 @@ def tokenize(text):
     # Remove stopwords
     words = [word for word in text if word not in stopwords.words('english')]
     
-    # Stemming and Lemmatization
-    stemmed_words = [PorterStemmer().stem(word) for word in words]
-    lemmatized_words = [WordNetLemmatizer().lemmatize(word) for word in stemmed_words]
+    # Lemmatization
+    lemmatized_words = [WordNetLemmatizer().lemmatize(word) for word in words]
     cleaned_text = [WordNetLemmatizer().lemmatize(word, pos='v') for word in lemmatized_words]
     
     return cleaned_text
