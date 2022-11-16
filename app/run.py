@@ -43,6 +43,7 @@ def index():
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
     
+    # Get features for second graph
     features = df.drop(columns=['id', 'message', 'original', 'genre'], axis=1)
     top_3 = list(features.sum().sort_values()[-1:-4:-1])
     top_3_names = list(features.sum().sort_values()[-1:-4:-1].index.values)
@@ -69,6 +70,7 @@ def index():
             }
         },
         
+        # Create second visual: top 3 categories frequency
         {
             'data': [
                 Bar(
