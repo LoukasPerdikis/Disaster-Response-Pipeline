@@ -50,8 +50,6 @@ def load_data(database_filepath):
     X = df['message']
     Y = df.drop(['id','message','original','genre'], axis=1)
     
-    Y = Y.replace(2, 1) #small cleaning task to replace erroneous target values
-    
     category_names = Y.columns.values
     
     print('Stage 1 passed: data imported successfully')
