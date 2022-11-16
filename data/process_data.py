@@ -69,6 +69,10 @@ def clean_data(df):
     
     df = df.drop_duplicates()
     
+    # replacing target columns with erroneous value of 2 with value of 1 
+    for name in category_column_names:
+        df[name] = df[name].replace(2, 1)
+    
     print('Stage 2 passed: df cleaned successfully')
     
     return df
