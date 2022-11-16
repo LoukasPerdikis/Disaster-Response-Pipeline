@@ -43,6 +43,7 @@ def load_data(database_filepath):
     Y: pandas Dataframe, dataframe of targets
     category_names: list of strings, a collection of the target category names 
     '''
+    # Load data from SQLite database
     engine = create_engine('sqlite:///{}'.format(database_filepath))
     
     df = pd.read_sql_table('DisasterResponsePipeline', engine)
@@ -102,6 +103,7 @@ def build_model():
     
     model: scikit-learn model, a successfully trained ML model.
     '''
+    # Machine learning pipeline initialized below
     pipeline = Pipeline([
         ('vect', CountVectorizer(tokenizer=tokenize)),
         ('tfidf', TfidfTransformer()),
@@ -109,10 +111,12 @@ def build_model():
     ])
     print('Pipeline initialized')
     
+    # parameters for Gridsearch. The parameter options are low due to program run time and for efficiency.
     parameters = {
         'clf__estimator__n_neighbors': [5, 10]
     }
-
+    
+    # Gridsearch
     model = GridSearchCV(pipeline, param_grid=parameters, cv=2)
     print('Stage 2 passed: Gridsearch completed successfully')
     
@@ -132,9 +136,11 @@ def evaluate_model(model, X_test, Y_test, category_names):
     
     Returns: None
     '''
+    # Use model to predict on unseen test data
     Y_pred = model.predict(X_test)
     print('Stage 4 passed: Unseen data predicted successfully')
     
+    # Supply classification report with accuracy, precision, recall, and f1 scores
     print(classification_report(Y_test, Y_pred, target_names=category_names))
     print('Stage 5 passed: Classification report supplied successfully')
 
@@ -150,6 +156,7 @@ def save_model(model, model_filepath):
     
     Returns: None
     '''
+    # Save model as pickle file
     joblib.dump(model, model_filepath)
     print('Stage 6 passed: Model saved successfully')
 
